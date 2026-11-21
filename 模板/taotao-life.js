@@ -300,7 +300,7 @@
     panel.addEventListener('click', (event) => {
       const action = event.target.closest('[data-tt-action]');
       if (action) act(action.dataset.ttAction);
-      if (event.target.closest('#tt-pause')) { paused = !paused; render(); }
+      if (event.target.closest('#tt-pause')) { paused = !paused; state.cat.lastUpdate = now(); save(); render(); }
     });
     render();
   }
