@@ -240,7 +240,7 @@ function openSlot(s) {
   drawer.style.top = '14%';
 }
 document.getElementById('drawer-x').onclick = () => { drawer.style.display = 'none'; };
-art.addEventListener('click', (e) => { window.lastClickX = e.clientX; });
+art.addEventListener('click', (e) => { window.lastClickX = e.clientX; }, true);
 
 /* ───────────────────────── 4. 控件 ───────────────────────── */
 let auto = true;
@@ -262,7 +262,7 @@ document.getElementById('btn-auto').onclick = (e) => {
 document.querySelectorAll('[data-weather]').forEach(btn => {
   btn.onclick = () => {
     weather = btn.dataset.weather;
-    if (auto) paint(new Date().getHours() + new Date().getMinutes()/60);
+    paint(auto ? new Date().getHours() + new Date().getMinutes()/60 : periods.find(p => p.id === manualPeriod).hour);
   };
 });
 
@@ -276,7 +276,7 @@ document.getElementById('btn-calib').onclick = (e) => {
 
 function enableDrag() {
   [...hzLayer.children].forEach((r, idx) => {
-    r.addEventListener('mousedown', (down) => {
+    if (r.dataset.dragBound === '1') return;\n    r.dataset.dragBound = '1';\n    r.addEventListener('mousedown', (down) => {
       if (!art.classList.contains('calib')) return;
       const s = slots[idx];
       const start = [down.clientX, down.clientY];
@@ -304,5 +304,6 @@ drawSlots();
 paint(new Date().getHours() + new Date().getMinutes()/60);
 setInterval(() => { if (auto) paint(new Date().getHours() + new Date().getMinutes()/60); }, 60_000);
 </script>
+<script src="taotao-life.js"></script>
 </body>
 </html>
